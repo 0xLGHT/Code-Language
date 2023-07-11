@@ -1,5 +1,6 @@
 let themes = ['fonts', 'images']; // Themes options
 let theme; // This will be the active theme
+let noiseLevel = 100; // Set this to the desired noise level
 let words = [
     "BEAUTY",
     "DISRUPT MONOTONY",
@@ -156,13 +157,14 @@ let words = [
     fill('#000000'); // Black color for text
     textSize(size);
     textFont(font);
-    text(random(words), x, y); // Choose a random word each time
+    text(random(words), x + random(-noiseLevel, noiseLevel), y + random(-noiseLevel, noiseLevel));
   }
   
   function drawImage(x, y) {
     let img = random(images);
     let size = random(10, 100); // Set a random size for the image
-    image(img, x, y, size, size);
+  
+    image(img, x + random(-noiseLevel, noiseLevel), y + random(-noiseLevel, noiseLevel), size, size);
   }
   
   function mousePressed() {
