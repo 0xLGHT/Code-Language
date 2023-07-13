@@ -1,6 +1,6 @@
 let themes = ['fonts', 'images']; // Themes options
 let theme; // This will be the active theme
-let noiseLevel = 100; // Set this to the desired noise level
+let noiseLevel = 1000; // Set this to the desired noise level
 let words = [
     "BEAUTY",
     "DISRUPT MONOTONY",
@@ -41,7 +41,14 @@ let words = [
     "<>∞</>",
     "MEMEWARE",
     "$$$",
-    "®"
+    "®",
+    "NOUNISH",
+    "BUY THE BLOOD",
+    "10X",
+    "100X",
+    "1000X",
+    "FINE ART IS PUNK",
+    "BOUGHT THE DIP"
   ];
   let roboto = [], inter = [], arial = [], times = [];
   let fonts = [roboto, inter, arial, times];
@@ -86,35 +93,54 @@ let words = [
     times[2] = loadFont('assets/Times-New-Roman-Italic.ttf');
     // add images as needed 
   
-    images[0] = loadImage('assets/chains.png');
-    images[1] = loadImage('assets/water wave.png');
-    images[2] = loadImage('assets/globe with meridians.png');
-    images[3] = loadImage('assets/rainbow.png');
-    images[4] = loadImage('assets/artist palette.png');
-    images[5] = loadImage('assets/bear.png');
-    images[6] = loadImage('assets/black flag.png');
-    images[7] = loadImage('assets/chart decreasing.png');
-    images[8] = loadImage('assets/chart increasing.png');
-    images[9] = loadImage('assets/clown face.png');
-    images[10] = loadImage('assets/computer disk.png');
-    images[11] = loadImage('assets/eggplant.png');
-    images[12] = loadImage('assets/fire.png');
-    images[13] = loadImage('assets/flushed face.png');
-    images[14] = loadImage('assets/frog.png');
-    images[15] = loadImage('assets/gorilla.png');
-    images[16] = loadImage('assets/smiling face with horns.png');
-    images[17] = loadImage('assets/thread.png');
-    images[18] = loadImage('assets/trade mark.png');
-    images[19] = loadImage('assets/unicorn.png');
-    images[20] = loadImage('assets/rzorb.png');
-    images[21] = loadImage('assets/web.png');
-    images[22] = loadImage('assets/pain.png');
-    images[23] = loadImage('assets/code4.png');
-    images[24] = loadImage('assets/bas.png');
-    images[25] = loadImage('assets/woj.png');
-    images[26] = loadImage('assets/was.png');
-    images[27] = loadImage('assets/check.png');
-    images[28] = loadImage('assets/szorb.png');
+    images[0] = loadImage('assets/adidas.png');
+    images[1] = loadImage('assets/amazon.png');
+    images[2] = loadImage('assets/amex.png');
+    images[3] = loadImage('assets/apple.png');
+    images[4] = loadImage('assets/att.png');
+    images[5] = loadImage('assets/bud.png');
+    images[6] = loadImage('assets/coke.png');
+    images[7] = loadImage('assets/costco.png');
+    images[8] = loadImage('assets/dc.png');
+    images[9] = loadImage('assets/ebay.png');
+    images[10] = loadImage('assets/fb.png');
+    images[11] = loadImage('assets/ford.png');
+    images[12] = loadImage('assets/ge.png');
+    images[13] = loadImage('assets/google.png');
+    images[14] = loadImage('assets/hd.png');
+    images[15] = loadImage('assets/ig.png');
+    images[16] = loadImage('assets/ikea.png');
+    images[17] = loadImage('assets/jandj.png');
+    images[18] = loadImage('assets/link.png');
+    images[19] = loadImage('assets/master.png');
+    images[20] = loadImage('assets/mcdonalds.png');
+    images[21] = loadImage('assets/microsoft.png');
+    images[22] = loadImage('assets/netflix.png');
+    images[23] = loadImage('assets/nike.png');
+    images[24] = loadImage('assets/pepsi.png');
+    images[25] = loadImage('assets/samsung.png');
+    images[26] = loadImage('assets/starbucks.png');
+    images[27] = loadImage('assets/target.png');
+    images[28] = loadImage('assets/tesla.png');
+    images[29] = loadImage('assets/toyota.png');
+    images[30] = loadImage('assets/twitter.png');
+    images[31] = loadImage('assets/uber.png');
+    images[32] = loadImage('assets/ups.png');
+    images[33] = loadImage('assets/visa.png');
+    images[34] = loadImage('assets/walmart.png');
+    images[35] = loadImage('assets/doge.png');
+    images[36] = loadImage('assets/chromie.png');
+    images[37] = loadImage('assets/check.png');
+    images[38] = loadImage('assets/rnoggles.png');
+    images[39] = loadImage('assets/woj.png');
+    images[40] = loadImage('assets/pain.png');
+    images[41] = loadImage('assets/pepehead.png');
+    images[42] = loadImage('assets/ogzorb.png');
+    images[43] = loadImage('assets/szorb.png');
+    images[44] = loadImage('assets/rzorb.png');
+    images[45] = loadImage('assets/ogrzorb.png');
+    images[46] = loadImage('assets/uni.png');
+    images[47] = loadImage('assets/bullish.png');
     
   }
   
@@ -133,11 +159,13 @@ let words = [
         drawItems(333, drawText);
         break;
       case 'images':
-        drawItems(2000, drawImage); // Increase this number for more images
+        drawItems(777, drawImage); // Increase this number for more images
         break;
       default:
         console.error(`Invalid theme: ${theme}`);
     }
+
+    addGrain(); // Apply the grainy effect
   }
   
   function drawItems(count, drawFunc) {
@@ -162,9 +190,35 @@ let words = [
   
   function drawImage(x, y) {
     let img = random(images);
-    let size = random(10, 100); // Set a random size for the image
-  
-    image(img, x + random(-noiseLevel, noiseLevel), y + random(-noiseLevel, noiseLevel), size, size);
+    let maxSize = random(100, 250); // Set a random size for the maximum dimension
+
+    // Keep the aspect ratio
+    let aspectRatio = img.width / img.height;
+    let imgWidth, imgHeight;
+    if (img.width > img.height) {
+      // If the image is wider than it is tall
+      imgWidth = maxSize;
+      imgHeight = maxSize / aspectRatio;
+    } else {
+      // If the image is taller than it is wide
+      imgWidth = maxSize * aspectRatio;
+      imgHeight = maxSize;
+    }
+
+    image(img, x + random(-noiseLevel, noiseLevel), y + random(-noiseLevel, noiseLevel), imgWidth, imgHeight);
+  }
+
+  function addGrain() {
+    push();
+    fill(200, 200, 200, 5);  // You can adjust alpha value (4th parameter) to make the grain more or less visible
+    for (let i = 0; i < width; i++) {
+      for (let j = 0; j < height; j++) {
+        if (random() < 0.025) {  // This 0.05 is density of the grain
+          rect(i, j, 1, 1);
+        }
+      }
+    }
+    pop();
   }
   
   function mousePressed() {
